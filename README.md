@@ -1,99 +1,102 @@
-# 🔒 Sistema Inteligente de Controle de Acesso (ESP32 + Python + Discord)
+---
 
-![Exemplo de Funcionamento do Discord](exemplo.png)
-*(Exemplo das notificações recebidas no Discord com o status de Acesso Liberado e Acesso Negado)*
+# 🔒 SafeAccess: IoT Smart Access Control (ESP32 + Python + Discord)
 
-## 📖 Sobre o Projeto
+An intelligent IoT security project that provides real-time facial recognition and access control. By integrating an **ESP32-CAM** with a **Python-based backend**, the system validates authorized users, triggers physical locks via relays, and sends instant notifications—including snapshots—directly to a **Discord** server.
 
-Este projeto implementa um **Sistema Inteligente de Controle de Acesso** combinando hardware de baixo custo (ESP32-CAM) com o poder do processamento na nuvem/local (Python) para reconhecimento facial e notificações em tempo real. 
-
-O sistema é ativado via sensor de movimento (PIR) e captura uma foto, que é enviada para o servidor Python. O servidor avalia se o rosto reconhecido está cadastrado, aciona um relé para abrir a porta, exibe o resultado num display OLED e notifica instantaneamente um servidor do **Discord** com a imagem capturada e o status do acesso.
+> 🚀 **Automated access with security and connectivity.**
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Key Features
 
-- 🧑‍💻 **Reconhecimento Facial Preciso:** Baseado na biblioteca `face_recognition` (dlib).
-- 💬 **Notificações no Discord:** Alertas em tempo real enviados via Webhook (incluindo imagens do momento).
-- 🚪 **Controle de Acesso Físico:** Acionamento de relé para abertura de fechaduras eletrônicas.
-- 👀 **Acionamento por Movimento:** Integração com sensor PIR para ativação sob demanda.
-- 📺 **Feedback Visual Local:** Status de "Acesso Liberado" ou "Acesso Negado" num Display OLED.
-
----
-
-## 🛠️ Requisitos e Hardware
-
-### Hardware Necessário
-- **Placa:** ESP32 com Câmera (ex: TTGO T-Camera, ESP32-CAM AI-Thinker).
-- **Sensores e Atuadores:** Sensor PIR (Movimento), Módulo Relé (Para a fechadura).
-- **Display:** Display OLED (I2C) para feedback local.
-
-### Software e Dependências
-- **Arduino IDE** (com suporte à placa ESP32 instalado).
-- **Python 3.8+** instalado no servidor/computador.
-- **Bibliotecas Python:** `Flask`, `requests`, `Pillow`, `face_recognition`, `dlib`, `cmake`.
+* 🧑‍💻 **Biometric Recognition:** High-accuracy facial recognition using `face_recognition` and `dlib`.
+* 💬 **Discord Integration:** Real-time alerts via Webhooks, sending access status and captured images.
+* 🚪 **Physical Control:** Automated relay activation for electronic door locks.
+* 👀 **Motion-Triggered:** PIR sensor integration to activate the camera only when movement is detected.
+* 📺 **Local Feedback:** Visual status updates ("Access Granted" / "Access Denied") on an I2C OLED display.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 🛠️ Hardware & Software Requirements
+
+### Hardware
+* **ESP32 Board:** ESP32-CAM (AI-Thinker) or TTGO T-Camera.
+* **Sensors:** PIR Motion Sensor (HC-SR501).
+* **Actuators:** 5V Relay Module (for the electronic lock).
+* **Display:** SSD1306 OLED Display (I2C).
+
+### Software
+* **Python 3.8+**
+* **Arduino IDE** (with ESP32 board support).
+* **Python Libraries:** `Flask`, `face_recognition`, `opencv-python`, `requests`, `Pillow`.
+
+---
+
+## 📁 Project Structure
 
 ```text
-📦 Projeto de Controle de Acesso
- ┣ 📂 AccessControl/           # Código do firmware ESP32 (Arduino IDE)
- ┃ ┗ 📜 AccessControl.ino 
- ┣ 📂 known_faces/             # Pessoas autorizadas (Fotos com o Nome.jpg)
- ┣ 📂 templates/               # (Opcional) Templates HTML do Flask
- ┣ 📜 cloud_bridge_server.py   # Servidor Python de Processamento e Integração
- ┗ 📜 README.md                # Esta documentação
+.
+├── AccessControl/          # ESP32 Firmware (Arduino IDE)
+│   └── AccessControl.ino
+├── known_faces/            # Database for authorized users (Name.jpg)
+├── templates/              # Optional Flask HTML templates
+├── cloud_bridge_server.py  # Python Backend & Integration Server
+├── exemplo.png             # Preview of Discord notifications
+└── README.md
 ```
 
 ---
 
-## 🚀 Como Configurar e Rodar
+## 🚀 Setup & Installation
 
-### 1. Configurar as Faces Conhecidas
-1. Na raiz do projeto, garanta que existe a pasta `known_faces`.
-2. Adicione fotos claras do rosto das pessoas autorizadas.
-3. O nome do arquivo será o identificador mostrado no acesso! (Ex: `Hugo_Takeda.jpg`, `Joao.png`).
+### 1. Database Setup
+1. Create a folder named `known_faces` in the root directory.
+2. Add clear photos of authorized individuals.
+3. The filename will be used as the person's name (e.g., `Hugo_Takeda.jpg`, `John_Doe.png`).
 
-### 2. Configurar o Webhook do Discord
-1. No seu servidor do Discord, vá em **Configurações do Canal** > **Integrações** > **Webhooks**.
-2. Clique em **Novo Webhook**, dê o nome "Controle de Acesso API" e copie a **URL do Webhook**.
-3. Abra o arquivo `cloud_bridge_server.py` e altere a variável:
-   ```python
-   DISCORD_WEBHOOK_URL = "SUA_URL_COPIADA_AQUI"
-   ```
+### 2. Discord Webhook
+1. In your Discord server, go to **Server Settings** > **Integrations** > **Webhooks**.
+2. Create a new Webhook and copy the **Webhook URL**.
+3. Open `cloud_bridge_server.py` and update the `DISCORD_WEBHOOK_URL` variable.
 
-### 3. Executando o Servidor Python
-No terminal, dentro da pasta do projeto, instale os requisitos e rode o servidor:
+### 3. Start the Python Server
+Run the following commands in your terminal:
 ```bash
-pip install Flask requests Pillow face_recognition
+pip install Flask requests Pillow face_recognition opencv-python
 python cloud_bridge_server.py
 ```
-> **Nota:** Anote o endereço de IP local gerado pelo Flask (ex: `http://192.168.0.X:5000`). Ele será usado no ESP32.
+*Note: Note down your local IP address (e.g., `192.168.x.x`) to configure the ESP32.*
 
-### 4. Configurando e Gravando o ESP32 (`AccessControl.ino`)
-1. Abra o arquivo na **Arduino IDE**.
-2. Preencha suas credenciais de Wi-Fi:
+### 4. ESP32 Configuration
+Open `AccessControl/AccessControl.ino` in Arduino IDE:
+1. Update `ssid` and `password` with your Wi-Fi credentials.
+2. Update the `serverUrl` with your Python server's IP:
    ```cpp
-   const char* ssid = "SEU_WIFI_SSID";
-   const char* password = "SEU_WIFI_SENHA";
+   String serverUrl = "http://192.168.x.x:5000/recognize";
    ```
-3. Aponte a requisição para o IP correto do seu Servidor Python:
-   ```cpp
-   String serverUrl = "http://192.168.0.X:5000/recognize";
-   ```
-4. Verifique as configurações de pinos correspondentes à sua placa ESP32 na IDE.
-5. Compile e faça o Upload para a placa.
+3. Compile and upload the code to your ESP32.
 
 ---
 
-## 📸 Fluxo de Execução
-1. O **Sensor PIR** detecta movimento perto da porta.
-2. A **Câmera do ESP32** tira uma foto e envia para a API Flask.
-3. A **API Python** analisa a biometria na foto comparando a pasta `known_faces`.
-4. A API envia o resultado (Liberado/Negado) de volta ao painel local e para o **Discord via Webhook**.
-5. Se liberado, o **Relé** atraca por 5 segundos para liberar a entrada.
+## 📸 How it Works
+
+1. **Detection:** The PIR sensor detects movement.
+2. **Capture:** The ESP32-CAM takes a photo and sends it to the Flask API via a POST request.
+3. **Analysis:** The Python server processes the image, comparing it against the `known_faces` database.
+4. **Action:**
+   * **If Recognized:** The server sends a "success" response. The ESP32 triggers the relay to open the door and displays "Access Granted" on the OLED.
+   * **If Unrecognized:** "Access Denied" is displayed.
+5. **Notification:** A message with the result and the photo is instantly sent to the Discord channel.
 
 ---
-*Desenvolvido para automatizar acessos com segurança e conectividade.*
+
+## 🤝 Contributing
+
+Contributions and suggestions are welcome! Feel free to open an issue or submit a pull request.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
