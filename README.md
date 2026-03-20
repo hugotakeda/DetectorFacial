@@ -1,24 +1,24 @@
 ---
 
-# 🔒 SafeAccess: IoT Smart Access Control (ESP32 + Python + Discord)
+# SafeAccess: IoT Smart Access Control (ESP32 + Python + Discord)
 
 An intelligent IoT security project that provides real-time facial recognition and access control. By integrating an **ESP32-CAM** with a **Python-based backend**, the system validates authorized users, triggers physical locks via relays, and sends instant notifications—including snapshots—directly to a **Discord** server.
 
-> 🚀 **Automated access with security and connectivity.**
+> **Automated access with security and connectivity.**
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-* 🧑‍💻 **Biometric Recognition:** High-accuracy facial recognition using `face_recognition` and `dlib`.
-* 💬 **Discord Integration:** Real-time alerts via Webhooks, sending access status and captured images.
-* 🚪 **Physical Control:** Automated relay activation for electronic door locks.
-* 👀 **Motion-Triggered:** PIR sensor integration to activate the camera only when movement is detected.
-* 📺 **Local Feedback:** Visual status updates ("Access Granted" / "Access Denied") on an I2C OLED display.
+* **Biometric Recognition:** High-accuracy facial recognition using `face_recognition` and `dlib`.
+* **Discord Integration:** Real-time alerts via Webhooks, sending access status and captured images.
+* **Physical Control:** Automated relay activation for electronic door locks.
+* **Motion-Triggered:** PIR sensor integration to activate the camera only when movement is detected.
+* **Local Feedback:** Visual status updates ("Access Granted" / "Access Denied") on an I2C OLED display.
 
 ---
 
-## 🛠️ Hardware & Software Requirements
+## Hardware & Software Requirements
 
 ### Hardware
 * **ESP32 Board:** ESP32-CAM (AI-Thinker) or TTGO T-Camera.
@@ -33,7 +33,7 @@ An intelligent IoT security project that provides real-time facial recognition a
 
 ---
 
-## 📁 Project Structure
+## Folder Structure
 
 ```text
 .
@@ -48,7 +48,7 @@ An intelligent IoT security project that provides real-time facial recognition a
 
 ---
 
-## 🚀 Setup & Installation
+## Setup & Installation
 
 ### 1. Database Setup
 1. Create a folder named `known_faces` in the root directory.
@@ -79,7 +79,7 @@ Open `AccessControl/AccessControl.ino` in Arduino IDE:
 
 ---
 
-## 📸 How it Works
+## How it Works
 
 1. **Detection:** The PIR sensor detects movement.
 2. **Capture:** The ESP32-CAM takes a photo and sends it to the Flask API via a POST request.
@@ -91,12 +91,14 @@ Open `AccessControl/AccessControl.ino` in Arduino IDE:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions and suggestions are welcome! Feel free to open an issue or submit a pull request.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License**.
+
+---
